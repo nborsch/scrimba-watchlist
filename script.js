@@ -2,8 +2,11 @@ const API_KEY = '1682b865'
 const searchInput = document.querySelector('#search-input')
 const searchForm = document.querySelector("#search")
 const mainContainer = document.querySelector('main')
+const pageTitle = document.querySelector('#page-title')
+const navLink = document.querySelector('#nav-link')
 
 searchForm.addEventListener('submit', searchMovie)
+navLink.addEventListener('click', togglePage)
 
 async function searchMovie(e){
     e.preventDefault()
@@ -96,5 +99,17 @@ function addToWatchlist(movieid){
         localStorage.setItem('watchlist', currentWatchlist)
     } else {
         localStorage.setItem('watchlist', `${movieid},`)
+    }
+}
+
+function togglePage() {
+    if (navLink.textContent === "My watchlist"){
+        pageTitle.textContent = "My watchlist"
+        navLink.textContent = "Search for movies"
+    } else {
+        pageTitle.textContent = "Find your film"
+        navLink.textContent = "My watchlist"
+        mainContainer.innerHTML = ''
+        mainContainer.classList.add('initial')
     }
 }
