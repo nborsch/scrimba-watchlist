@@ -103,13 +103,31 @@ function addToWatchlist(movieid){
 }
 
 function togglePage() {
+    // going to watchlist
     if (navLink.textContent === "My watchlist"){
         pageTitle.textContent = "My watchlist"
         navLink.textContent = "Search for movies"
+        renderWatchlist()
+    // going to search
     } else {
         pageTitle.textContent = "Find your film"
         navLink.textContent = "My watchlist"
         mainContainer.innerHTML = ''
         mainContainer.classList.add('initial')
+    }
+}
+
+function renderWatchlist(){
+    let watchlist = localStorage.getItem('watchlist')
+    // if the watchlist exists in localstorage, there are movies in it
+    if (watchlist){
+        watchlist = [...watchlist.split(',')].slice(0, -1)
+        
+
+    // if there's nothing in storage, there are no movies in watchlist
+    } else {
+        mainContainer.classList.remove('initial')
+        mainContainer.classList.add('no-data')
+        mainContainer.innerHTML = `<p>Your watchlist is looking a little empty...<br><a href="index.html">Let’s add some movies!</a></p>`
     }
 }
