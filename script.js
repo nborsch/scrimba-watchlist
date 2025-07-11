@@ -2,6 +2,7 @@ const API_KEY = '1682b865'
 const searchInput = document.querySelector('#search-input')
 const searchForm = document.querySelector("#search")
 const mainContainer = document.querySelector('main')
+let watchlist = []
 
 searchForm.addEventListener('submit', searchMovie)
 
@@ -62,9 +63,9 @@ function renderMovies(movieObjs){
                     <span class="movie-duration fz12">${movieObj.duration}</span>
                     <span class="movie-genre fz12">${movieObj.genre}</span>
                     <div class="movie-add-watchlist">
-                        <a data-movieid="${movieObj.id}" href="#">
-                        <img src="./img/add-watchlist-icon.png" alt="">
-                        <span class="fz12">Watchlist</span>
+                        <a href="#">
+                        <img data-movieid="${movieObj.id}" src="./img/add-watchlist-icon.png" alt="">
+                        <span data-movieid="${movieObj.id}" class="fz12">Watchlist</span>
                         </a>
                     </div>
                     <p class="movie-description">${movieObj.description}</p>
@@ -76,6 +77,20 @@ function renderMovies(movieObjs){
     mainContainer.classList.remove('no-data')
     mainContainer.innerHTML = moviesHtml
 
-    // add event listeners only to the movie links
-    document.querySelectorAll('a[data-movieid]').forEach(link => link.addEventListener('click', e => addToWatchlist(e)))
+    setupAddToWatchlist()
+}
+
+function setupAddToWatchlist() {
+    document.querySelectorAll('.movie-add-watchlist a').forEach(movieLink => {
+    // add event listeners only to each movie "add to watchlist" link
+    // then push movieid to watchlist array
+    movieLink.addEventListener('click', e => {
+            let movieid = e.target.dataset.movieid
+            if (!watchlist.includes(movieid)) addToWatchlist(movieid)
+        })
+    })
+}
+
+function addToWatchlist(movieid){
+
 }
