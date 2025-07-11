@@ -1,0 +1,192 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    display: grid;
+    place-content: center;
+}
+
+.wrapper {
+    display: grid;
+    grid-auto-columns: minmax(330px, 550px);
+    grid-template-rows: 200px 1fr;
+    
+    height: 100vh;
+    margin: auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+
+    padding: 0 45px;
+
+    color: whitesmoke;
+    background: url('./img/header.png');
+}
+
+header p {
+    font-size: 36px;
+    font-weight: bolder;
+}
+
+nav {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+nav a {
+    text-decoration: none;
+    color: whitesmoke;
+}
+
+.search {
+    position: absolute;
+    bottom: -18px;
+    left: 0;
+    right: 0;
+    margin: auto;
+
+    display: flex;
+    width: 90%;
+    max-width: 430px;
+    gap: 0;
+}
+
+#search-input {
+    width: 100%;
+    height: 35px;
+
+    background-image: url('./img/search-icon.png');
+    background-repeat: no-repeat;
+    background-position: center left 5px;
+    text-indent: 25px;
+
+    border: 1px solid #D1D5DB;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+#search-button {
+    color: #374151;
+    border: 1px solid #D1D5DB;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+main {
+    padding: 45px;
+}
+
+.nodata {
+    color: #DFDDDD;
+    font-weight: 900;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.initial {
+    background-image: url('./img/no-data-initial.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.movie {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+
+    border-bottom: 1px solid #E5E7EB;
+    padding: 20px 0;
+}
+
+.movie-cover {
+    width: 100px;
+}
+
+.movie-info {
+    display: grid;
+    grid-template-rows: minmax(40px,auto) 25px 1fr;
+    grid-template-columns: 50px 1fr 80px;
+    grid-template-areas: 
+            "   title       title       title    "
+            "  duration     genre   add-watchlist"
+            "description description description ";
+    align-items: start;
+    font-size: 14px;
+}
+
+.movie-title {
+    grid-area: title;
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    padding-top: 8px;
+}
+
+.movie-title-name {
+    font-size: 18px;
+    font-weight: bolder;
+    margin-bottom: 4px;
+}
+
+.movie-rating,
+.movie-description,
+.movie-duration,
+.movie-genre,
+.movie-add-watchlist
+
+.fz12 {
+    font-size: 12px;
+}
+
+.movie-duration {
+    grid-area: duration;
+}
+
+.movie-genre {
+    grid-area: genre;
+}
+
+.movie-add-watchlist {
+    grid-area: add-watchlist;
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.movie-description {
+    grid-area: description;
+    font-size: 14px;
+}
+
+@media (max-width: 500px) {
+    header {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    nav {
+        margin-top: 20px;
+    }
+
+    .movie-info {
+        grid-template-rows: minmax(40px,auto) 25px 25px 1fr;
+        grid-template-columns: 50px 1fr;
+        grid-template-areas: 
+                "title title"
+                "duration genre"
+                "add-watchlist add-watchlist"
+                "description description";
+    }
+}
