@@ -1,6 +1,5 @@
 const API_KEY = '1682b865'
 const searchInput = document.querySelector('#search-input')
-const searchBtn = document.querySelector('#search-button')
 const searchForm = document.querySelector("#search")
 const mainContainer = document.querySelector('main')
 
@@ -37,7 +36,7 @@ function getMovieObjs(moviesArr){
     let movieObjs = moviesArr.map(movieData => {
         return {
             title: movieData.Title,
-            id: movieData.imdbId,
+            id: movieData.imdbID,
             cover: movieData.Poster,
             rating: movieData.Ratings[0].Value.split('/')[0],
             duration: movieData.Runtime,
@@ -63,7 +62,7 @@ function renderMovies(movieObjs){
                     <span class="movie-duration fz12">${movieObj.duration}</span>
                     <span class="movie-genre fz12">${movieObj.genre}</span>
                     <div class="movie-add-watchlist">
-                        <a href="#">
+                        <a data-movieid="${movieObj.id}" href="#">
                         <img src="./img/add-watchlist-icon.png" alt="">
                         <span class="fz12">Watchlist</span>
                         </a>
@@ -76,4 +75,7 @@ function renderMovies(movieObjs){
     mainContainer.classList.remove('initial')
     mainContainer.classList.remove('no-data')
     mainContainer.innerHTML = moviesHtml
+
+    // add event listeners only to the movie links
+    document.querySelectorAll('a[data-movieid]').forEach(link => link.addEventListener('click', e => addToWatchlist(e)))
 }
