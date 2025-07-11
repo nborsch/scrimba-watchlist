@@ -2,7 +2,6 @@ const API_KEY = '1682b865'
 const searchInput = document.querySelector('#search-input')
 const searchForm = document.querySelector("#search")
 const mainContainer = document.querySelector('main')
-let watchlist = []
 
 searchForm.addEventListener('submit', searchMovie)
 
@@ -27,9 +26,7 @@ async function searchMovie(e){
 }
 
 async function getMovies(moviesIds) {
-    const moviesPromises = moviesIds.map(async movieId => {
-        return await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${movieId}`)
-    })
+    const moviesPromises = moviesIds.map(movieId => fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${movieId}`))
     return Promise.all(moviesPromises)
 }
 
@@ -83,14 +80,21 @@ function renderMovies(movieObjs){
 function setupAddToWatchlist() {
     document.querySelectorAll('.movie-add-watchlist a').forEach(movieLink => {
     // add event listeners only to each movie "add to watchlist" link
-    // then push movieid to watchlist array
+    // once clicked, call addToWatchlist with movieid
     movieLink.addEventListener('click', e => {
-            let movieid = e.target.dataset.movieid
-            if (!watchlist.includes(movieid)) addToWatchlist(movieid)
+            const movieid = e.target.dataset.movieid
+            addToWatchlist(movieid)
         })
     })
 }
 
 function addToWatchlist(movieid){
+    let currentWatchlist = localStorage.getItem('watchlist')
 
+    if (currentWatchlist) {
+        currentWatchlist += `${movieid},`
+        localStorage.setItem('watchlist', currentWatchlist)
+    } else {
+        localStorage.setItem('watchlist', `${movieid},`)
+    }
 }
