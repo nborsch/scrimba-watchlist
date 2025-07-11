@@ -84,7 +84,7 @@ main {
     padding: 45px;
 }
 
-.nodata {
+.no-data {
     color: #DFDDDD;
     font-weight: 900;
     display: flex;
@@ -159,6 +159,11 @@ main {
 
 .movie-add-watchlist {
     grid-area: add-watchlist;
+}
+
+.movie-add-watchlist a {
+    color: black;
+    text-decoration: none;
 
     display: flex;
     align-items: center;

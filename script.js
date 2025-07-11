@@ -18,7 +18,9 @@ async function searchMovie(){
         renderMovies(movieObjs)
     // no search results found
     } else {
-        console.log('no results')
+        mainContainer.classList.add('no-data')
+        mainContainer.classList.remove('initial')
+        mainContainer.innerHTML = "<p>Unable to find what you’re looking for.<br>Please try another search.</p>"
     }
 }
 
@@ -33,6 +35,7 @@ function getMovieObjs(moviesArr){
     let movieObjs = moviesArr.map(movieData => {
         return {
             title: movieData.Title,
+            id: movieData.imdbId,
             cover: movieData.Poster,
             rating: movieData.Ratings[0].Value.split('/')[0],
             duration: movieData.Runtime,
@@ -58,8 +61,10 @@ function renderMovies(movieObjs){
                     <span class="movie-duration fz12">${movieObj.duration}</span>
                     <span class="movie-genre fz12">${movieObj.genre}</span>
                     <div class="movie-add-watchlist">
+                        <a href="#">
                         <img src="./img/add-watchlist-icon.png" alt="">
                         <span class="fz12">Watchlist</span>
+                        </a>
                     </div>
                     <p class="movie-description">${movieObj.description}</p>
                 </div><!-- movie-info -->
@@ -67,5 +72,6 @@ function renderMovies(movieObjs){
             `
     }
     mainContainer.classList.remove('initial')
+    mainContainer.classList.remove('no-data')
     mainContainer.innerHTML = moviesHtml
 }
