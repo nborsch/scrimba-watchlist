@@ -1,11 +1,13 @@
 const API_KEY = '1682b865'
 const searchInput = document.querySelector('#search-input')
 const searchBtn = document.querySelector('#search-button')
+const searchForm = document.querySelector("#search")
 const mainContainer = document.querySelector('main')
 
-searchBtn.addEventListener('click', searchMovie)
+searchForm.addEventListener('submit', searchMovie)
 
-async function searchMovie(){
+async function searchMovie(e){
+    e.preventDefault()
     const searchQuery = searchInput.value 
     const responseSearch = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${searchQuery}`)
     const dataSearch = await responseSearch.json()

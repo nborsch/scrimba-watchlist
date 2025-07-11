@@ -87,9 +87,17 @@ main {
 .no-data {
     color: #DFDDDD;
     font-weight: 900;
+
     display: flex;
     justify-content: center;
     align-items: center;
+    
+    text-align: center;
+}
+
+.no-data a {
+    text-decoration: none;
+    color: black;
 }
 
 .initial {
