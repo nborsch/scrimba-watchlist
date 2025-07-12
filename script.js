@@ -117,6 +117,26 @@ function togglePage() {
     }
 }
 
+function getWatchlist(){
+    let watchlist = localStorage.getItem('watchlist')
+    // if watchlist exists in localStorage
+    if (watchlist) {
+        // make watchlist into array
+        watchlist = watchlist.split(',')
+        if (watchlist.at(-1) === '') watchlist = watchlist.slice(0, -1)
+        return watchlist
+        
+    // if watchlist doesn't exist in localstorage, return empty array
+    } else {
+        return []
+    }
+}
+
+function saveWatchlist(movieIdArray){
+    const newWatchlist = movieIdArray.join(',')
+    localStorage.setItem('watchlist', newWatchlist)
+}
+
 function renderWatchlist(){
     let watchlist = localStorage.getItem('watchlist')
     // if the watchlist exists in localstorage, there are movies in it
