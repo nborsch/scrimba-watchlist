@@ -87,7 +87,7 @@ function renderMovies(movieObjs, fromSearch){
     mainContainer.classList.remove('no-data')
     mainContainer.innerHTML = moviesHtml
 
-    setupWatchlistButtons(fromSearch)
+    setupWatchlistButtons()
 }
 
 function togglePage() {
@@ -105,23 +105,27 @@ function togglePage() {
     }
 }
 
-function setupWatchlistButtons(fromSearch) {
+function setupWatchlistButtons() {
     document.querySelectorAll('.movie-add-watchlist a').forEach(movieLink => {
     // add event listeners only to each movie "add to watchlist" link
     // once clicked, call with movieid
     movieLink.addEventListener('click', e => {
+            e.preventDefault()
             const movieid = e.target.dataset.movieid
-            addRemoveWatchlist(movieid)
+            watchlistButtons(movieid)
         })
     })
 }
 
-function addRemoveWatchlist(movieid){
+function watchlistButtons(movieid){
     let currentWatchlist = getWatchlist()
-    // if watchlist does not include item
+    // if item isn't already in watchlist
     if (!currentWatchlist.includes(movieid)){
         currentWatchlist.push(movieid)
         saveWatchlist(currentWatchlist)
+        const addBtn = document.querySelectorAll(`[data-movieid="${movieid}"]`)[1]
+        addBtn.textContent = 'Added'
+        setTimeout(() => addBtn.textContent = 'Watchlist', 5000)
     } else {
         let index = currentWatchlist.indexOf(movieid)
         currentWatchlist.splice(index, 1)
