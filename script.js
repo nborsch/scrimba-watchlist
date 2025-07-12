@@ -135,7 +135,7 @@ function saveWatchlist(movieIdArray){
 }
 
 function renderWatchlist(){
-    let watchlist = localStorage.getItem('watchlist')
+    let watchlist = getWatchlist()
     // if the watchlist exists in localstorage, there are movies in it
     if (!watchlist == []){
         // render watchlist
