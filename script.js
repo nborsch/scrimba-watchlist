@@ -125,8 +125,12 @@ function watchlistButtons(movieid){
         saveWatchlist(currentWatchlist)
         const addBtn = document.querySelectorAll(`[data-movieid="${movieid}"]`)[1]
         addBtn.textContent = 'Added'
-        setTimeout(() => addBtn.textContent = 'Watchlist', 5000)
+        setTimeout(() => addBtn.textContent = 'Watchlist', 3000)
+    // if item is already in watchlist, remove it
     } else {
+        // if we are on the search page, don't do anything
+        if (pageTitle.textContent === 'Find your film') return
+
         let index = currentWatchlist.indexOf(movieid)
         currentWatchlist.splice(index, 1)
         saveWatchlist(currentWatchlist)
