@@ -16,10 +16,8 @@ async function searchMovie(e){
     // found search results
     if (dataSearch.Search) {
         const moviesIds = dataSearch.Search.map(movie => movie.imdbID)
-        const moviesResponses = await getMovies(moviesIds)
-        const moviesArr = await Promise.all(moviesResponses.map(movieData => movieData.json()))
-        const movieObjs = getMovieObjs(moviesArr)
-        renderMovies(movieObjs)
+        const movieObjs = await idsToObjs(moviesIds)
+        renderMovies(movieObjs, true)
     // no search results found
     } else {
         mainContainer.classList.add('no-data')
@@ -39,7 +37,7 @@ function getMovieObjs(moviesArr){
             title: movieData.Title,
             id: movieData.imdbID,
             cover: movieData.Poster,
-            rating: movieData.Ratings[0].Value.split('/')[0],
+            rating: movieData.Ratings?.[0].Value.split('/')[0],
             duration: movieData.Runtime,
             genre: movieData.Genre,
             description: movieData.Plot
@@ -48,7 +46,14 @@ function getMovieObjs(moviesArr){
     return movieObjs
 }
 
-function renderMovies(movieObjs){
+async function idsToObjs(movieIds){
+    const responses = await getMovies(movieIds)
+    const movieData = await Promise.all(responses.map(eachMovieData => eachMovieData.json()))
+    const movieObjs = getMovieObjs(movieData)
+    return movieObjs
+}
+
+function renderMovies(movieObjs, fromSearch){
     let moviesHtml = ''
     for (let movieObj of movieObjs){
         moviesHtml += `
@@ -64,8 +69,8 @@ function renderMovies(movieObjs){
                     <span class="movie-genre fz12">${movieObj.genre}</span>
                     <div class="movie-add-watchlist">
                         <a href="#">
-                        <img data-movieid="${movieObj.id}" src="./img/add-watchlist-icon.png" alt="">
-                        <span data-movieid="${movieObj.id}" class="fz12">Watchlist</span>
+                        <img data-movieid="${movieObj.id}" src="${fromSearch ? './img/add-watchlist-icon.png' : './img/remove-watchlist-icon.png'}" alt="">
+                        <span data-movieid="${movieObj.id}" class="fz12">${fromSearch ? 'Watchlist' : 'Remove'}</span>
                         </a>
                     </div>
                     <p class="movie-description">${movieObj.description}</p>
@@ -78,28 +83,6 @@ function renderMovies(movieObjs){
     mainContainer.innerHTML = moviesHtml
 
     setupAddToWatchlist()
-}
-
-function setupAddToWatchlist() {
-    document.querySelectorAll('.movie-add-watchlist a').forEach(movieLink => {
-    // add event listeners only to each movie "add to watchlist" link
-    // once clicked, call addToWatchlist with movieid
-    movieLink.addEventListener('click', e => {
-            const movieid = e.target.dataset.movieid
-            addToWatchlist(movieid)
-        })
-    })
-}
-
-function addToWatchlist(movieid){
-    let currentWatchlist = localStorage.getItem('watchlist')
-
-    if (currentWatchlist) {
-        currentWatchlist += `${movieid},`
-        localStorage.setItem('watchlist', currentWatchlist)
-    } else {
-        localStorage.setItem('watchlist', `${movieid},`)
-    }
 }
 
 function togglePage() {
@@ -117,12 +100,51 @@ function togglePage() {
     }
 }
 
-function renderWatchlist(){
+function setupAddToWatchlist() {
+    document.querySelectorAll('.movie-add-watchlist a').forEach(movieLink => {
+    // add event listeners only to each movie "add to watchlist" link
+    // once clicked, call addToWatchlist with movieid
+    movieLink.addEventListener('click', e => {
+            const movieid = e.target.dataset.movieid
+            addToWatchlist(movieid)
+        })
+    })
+}
+
+function addToWatchlist(movieid){
+    let currentWatchlist = getWatchlist()
+    if (!currentWatchlist.includes(movieid)){
+        currentWatchlist.push(movieid)
+        saveWatchlist(currentWatchlist)
+    }    
+}
+
+function getWatchlist(){
     let watchlist = localStorage.getItem('watchlist')
-    // if the watchlist exists in localstorage, there are movies in it
-    if (watchlist){
-        watchlist = [...watchlist.split(',')].slice(0, -1)
+    // if watchlist exists in localStorage
+    if (watchlist) {
+        // make watchlist into array
+        watchlist = watchlist.split(',')
+        if (watchlist.at(-1) === '') watchlist = watchlist.slice(0, -1)
+        return watchlist
         
+    // if watchlist doesn't exist in localstorage, return empty array
+    } else {
+        return []
+    }
+}
+
+function saveWatchlist(movieIdArray){
+    const newWatchlist = movieIdArray.join(',')
+    localStorage.setItem('watchlist', newWatchlist)
+}
+
+async function renderWatchlist(){
+    let watchlist = getWatchlist()
+    // if the watchlist exists in localstorage, there are movies in it
+    if (!watchlist == []){
+        const movieObjs = await idsToObjs(watchlist)
+        renderMovies(movieObjs, false)
 
     // if there's nothing in storage, there are no movies in watchlist
     } else {
