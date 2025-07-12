@@ -33,11 +33,14 @@ async function getMovies(moviesIds) {
 
 function getMovieObjs(moviesArr){
     let movieObjs = moviesArr.map(movieData => {
+        let ratings = ''
+        movieData.Ratings.length ? ratings = movieData.Ratings?.[0].Value.split('/')[0] : ''
+
         return {
             title: movieData.Title,
             id: movieData.imdbID,
             cover: movieData.Poster,
-            rating: movieData.Ratings?.[0].Value.split('/')[0],
+            rating: ratings,
             duration: movieData.Runtime,
             genre: movieData.Genre,
             description: movieData.Plot
