@@ -108,8 +108,10 @@ function setupAddToWatchlist() {
 
 function addToWatchlist(movieid){
     let currentWatchlist = getWatchlist()
-    currentWatchlist.push(movieid)
-    saveWatchlist(currentWatchlist)
+    if (!currentWatchlist.includes(movieid)){
+        currentWatchlist.push(movieid)
+        saveWatchlist(currentWatchlist)
+    }    
 }
 
 function getWatchlist(){
