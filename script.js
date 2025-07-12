@@ -91,17 +91,6 @@ function setupAddToWatchlist() {
     })
 }
 
-function addToWatchlist(movieid){
-    let currentWatchlist = localStorage.getItem('watchlist')
-
-    if (currentWatchlist) {
-        currentWatchlist += `${movieid},`
-        localStorage.setItem('watchlist', currentWatchlist)
-    } else {
-        localStorage.setItem('watchlist', `${movieid},`)
-    }
-}
-
 function togglePage() {
     // going to watchlist
     if (navLink.textContent === "My watchlist"){
@@ -114,6 +103,17 @@ function togglePage() {
         navLink.textContent = "My watchlist"
         mainContainer.innerHTML = ''
         mainContainer.classList.add('initial')
+    }
+}
+
+function addToWatchlist(movieid){
+    let currentWatchlist = localStorage.getItem('watchlist')
+
+    if (currentWatchlist) {
+        currentWatchlist += `${movieid},`
+        localStorage.setItem('watchlist', currentWatchlist)
+    } else {
+        localStorage.setItem('watchlist', `${movieid},`)
     }
 }
 
