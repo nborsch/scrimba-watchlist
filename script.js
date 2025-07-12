@@ -105,30 +105,26 @@ function togglePage() {
 function setupWatchlistButtons(fromSearch) {
     document.querySelectorAll('.movie-add-watchlist a').forEach(movieLink => {
     // add event listeners only to each movie "add to watchlist" link
-    // once clicked, call the corresponding function with movieid
+    // once clicked, call with movieid
     movieLink.addEventListener('click', e => {
             const movieid = e.target.dataset.movieid
-            fromSearch ? addToWatchlist(movieid) : removeFromWatchlist(movieid)
+            addRemoveWatchlist(movieid)
         })
     })
 }
 
-function addToWatchlist(movieid){
+function addRemoveWatchlist(movieid){
     let currentWatchlist = getWatchlist()
+    // if watchlist does not include item
     if (!currentWatchlist.includes(movieid)){
         currentWatchlist.push(movieid)
         saveWatchlist(currentWatchlist)
-    }    
-}
-
-function removeFromWatchlist(movieid){
-    let currentWatchlist = getWatchlist()
-    if (currentWatchlist.includes(movieid)){
+    } else {
         let index = currentWatchlist.indexOf(movieid)
         currentWatchlist.splice(index, 1)
         saveWatchlist(currentWatchlist)
         renderWatchlist()
-    }   
+    }
 }
 
 function getWatchlist(){
@@ -153,8 +149,8 @@ function saveWatchlist(movieIdArray){
 
 async function renderWatchlist(){
     let watchlist = getWatchlist()
-    // if the watchlist exists in localstorage, there are movies in it
-    if (!watchlist == []){
+    // if the watchlist in localstorage isn't empty, there are movies in it
+    if (watchlist.length){
         const movieObjs = await idsToObjs(watchlist)
         renderMovies(movieObjs, false)
 
