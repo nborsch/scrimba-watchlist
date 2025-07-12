@@ -55,6 +55,8 @@ async function idsToObjs(movieIds){
 
 function renderMovies(movieObjs, fromSearch){
     let moviesHtml = ''
+    const iconAdd = './img/add-watchlist-icon.png'
+    const iconRemove = './img/remove-watchlist-icon.png'
     for (let movieObj of movieObjs){
         moviesHtml += `
             <div class="movie">
@@ -69,7 +71,7 @@ function renderMovies(movieObjs, fromSearch){
                     <span class="movie-genre fz12">${movieObj.genre}</span>
                     <div class="movie-add-watchlist">
                         <a href="#">
-                        <img data-movieid="${movieObj.id}" src="${fromSearch ? './img/add-watchlist-icon.png' : './img/remove-watchlist-icon.png'}" alt="">
+                        <img data-movieid="${movieObj.id}" src="${fromSearch ? iconAdd : iconRemove}" alt="">
                         <span data-movieid="${movieObj.id}" class="fz12">${fromSearch ? 'Watchlist' : 'Remove'}</span>
                         </a>
                     </div>
@@ -82,7 +84,7 @@ function renderMovies(movieObjs, fromSearch){
     mainContainer.classList.remove('no-data')
     mainContainer.innerHTML = moviesHtml
 
-    setupAddToWatchlist()
+    setupWatchlistButtons(fromSearch)
 }
 
 function togglePage() {
@@ -100,13 +102,13 @@ function togglePage() {
     }
 }
 
-function setupAddToWatchlist() {
+function setupWatchlistButtons(fromSearch) {
     document.querySelectorAll('.movie-add-watchlist a').forEach(movieLink => {
     // add event listeners only to each movie "add to watchlist" link
-    // once clicked, call addToWatchlist with movieid
+    // once clicked, call the corresponding function with movieid
     movieLink.addEventListener('click', e => {
             const movieid = e.target.dataset.movieid
-            addToWatchlist(movieid)
+            fromSearch ? addToWatchlist(movieid) : removeFromWatchlist(movieid)
         })
     })
 }
@@ -117,6 +119,16 @@ function addToWatchlist(movieid){
         currentWatchlist.push(movieid)
         saveWatchlist(currentWatchlist)
     }    
+}
+
+function removeFromWatchlist(movieid){
+    let currentWatchlist = getWatchlist()
+    if (currentWatchlist.includes(movieid)){
+        let index = currentWatchlist.indexOf(movieid)
+        currentWatchlist.splice(index, 1)
+        saveWatchlist(currentWatchlist)
+        renderWatchlist()
+    }   
 }
 
 function getWatchlist(){
