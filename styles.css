@@ -32,12 +32,12 @@ header {
 }
 
 header p {
-    font-size: 36px;
+    font-size: 2.25rem;
     font-weight: bolder;
 }
 
 nav {
-    font-size: 14px;
+    font-size: 0.875rem;
     margin-top: 10px;
 }
 
@@ -128,7 +128,7 @@ main {
             "  duration     genre   add-watchlist"
             "description description description ";
     align-items: start;
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 .movie-title {
@@ -142,7 +142,7 @@ main {
 }
 
 .movie-title-name {
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: bolder;
     margin-bottom: 4px;
 }
@@ -154,7 +154,7 @@ main {
 .movie-add-watchlist
 
 .fz12 {
-    font-size: 12px;
+    font-size: 0.75rem;
 }
 
 .movie-duration {
@@ -180,7 +180,7 @@ main {
 
 .movie-description {
     grid-area: description;
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 @media (max-width: 500px) {
